@@ -15,29 +15,24 @@ cdef extern from "SFML/Config.hpp" namespace "sf":
     ctypedef signed   long long Int64
     ctypedef unsigned long long Uint64
 
+
+cdef extern from "player.hpp":
+    ctypedef cbool (*playerCallback)(object, Chunk &)
+    cdef struct Chunk "sf::SoundStream::Chunk":
+        Int16 *samples
+        size_t sampleCount
+    cdef cppclass Player:
+        Player(object, playerCallback, unsigned int, unsigned int)
+        void play()
+        void pause()
+        void stop()
+        unsigned int getChannelCount()
+        unsigned int getSampleRate()
+        Status getStatus()
+        cbool onGetData(Chunk &)
+
 cdef extern from "SFML/Audio/SoundSource.hpp" namespace "sf":
     ctypedef enum Status "sf::SoundSource::Status":
         Stopped "sf::SoundSource::Stopped"
         Paused "sf::SoundSource::Paused"
         Playing "sf::SoundSource::Playing"
-
-cdef extern from "SFML/Audio/SoundBuffer.hpp" namespace "sf":
-    cdef cppclass SoundBuffer:
-        SoundBuffer() except +
-        # SoundBuffer(const SoundBuffer &) except +
-        # cbool loadFromFile(const cstr &)
-        # cbool loadFromStream(InputStream &)
-        cbool loadFromSamples(Int16 *, Uint64, unsigned int, unsigned int)
-        const Int16 *getSamples()
-        Uint64 getSampleCount()
-        unsigned int getSampleRate()
-        unsigned int getChannelCount()
-
-cdef extern from "SFML/Audio/Sound.hpp" namespace "sf":
-    cdef cppclass Sound:
-        Sound() except +
-        # Sound(Sound &) except +
-        # Sound(const SoundBuffer &) except +
-        void play()
-        Status getStatus()
-        void setBuffer(const SoundBuffer &)
