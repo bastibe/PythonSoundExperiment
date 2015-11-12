@@ -2,11 +2,10 @@ import time
 from soundfile import SoundFile
 from sound import SoundPlayer
 
-with SoundFile("Mann_short.wav") as f:
-    def callback():
-        data = f.read(8096)
-        return data, len(data) > 0
-    player = SoundPlayer(callback, f.samplerate, f.channels)
-    player.play()
-    while player.playing:
-        time.sleep(0.1)
+blocksize = 1024
+
+player = SoundPlayer(44100, 1)
+for block in SoundFile("Mann_short.wav").blocks(blocksize):
+    player.play(block)
+while player.isplaying:
+    time.sleep(0.1)

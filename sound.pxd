@@ -6,10 +6,6 @@ cdef extern from "SFML/Config.hpp" namespace "sf":
     ctypedef unsigned char Uint8
     ctypedef signed   short Int16
     ctypedef unsigned short Uint16
-    # if os.name == 'nt':
-    #     ctypedef signed   __int64 Int64;
-    #     ctypedef unsigned __int64 Uint64;
-    # else:
     ctypedef signed   int Int32
     ctypedef unsigned int Uint32
     ctypedef signed   long long Int64
